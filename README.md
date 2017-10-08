@@ -15,10 +15,14 @@ DH parameters had been derived from the urdf file and using them the homogenous 
 
 After filling the IK_server.py with the code in the repository, you can launch the project via:
 
+```
 $ cd ~/catkin_ws/src/RoboND-Kinematics-Project/kuka_arm/scripts
 $ ./safe_spawner.sh  
+```
 
 On a seperate terminal run the IK_server.py and click next on Rviz
 
+```
 $ cd ~/catkin_ws/src/RoboND-Kinematics-Project/kuka_arm/scripts
 $ rosrun kuka_arm IK_server.py
+```
