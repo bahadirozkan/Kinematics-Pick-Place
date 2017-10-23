@@ -1,13 +1,7 @@
 #!/usr/bin/env python
 
-# Copyright (C) 2017 Electric Movement Inc.
-#
 # This file is part of Robotic Arm: Pick and Place project for Udacity
 # Robotics nano-degree program
-#
-# All Rights Reserved.
-
-# Author: Harsh Pandya
 
 # import modules
 import rospy
@@ -83,17 +77,24 @@ def find_angles(px,py,pz,roll,pitch,yaw):
     WC = EE - 0.303 * ROT_EE[:,2]
 
     theta1 = atan2(WC[1],WC[0])
+
+    l = sqrt(pow(s[d4],2) + pow(-s[a3],2))
+    m1 = sqrt(pow(WC[0],2) + pow(WC[1],2))
+    mx = m1 - s[a1]
+    my = WC[2]  - s[d1]
+    m = sqrt(pow(mx,2) + pow(my,2))
+    phi = atan2(s[d4],-s[a3])
+    alpha = atan2(my,mx)
     
-    side_a = 1.501
-    side_b = sqrt(pow((sqrt(WC[0] * WC[0] + WC[1] * WC[1]) - 0.35), 2) + pow((WC[2] - 0.75), 2))
-    side_c = 1.25
+    side_a = m
+    side_b = s[a2]
+    side_c = l
 
-    angle_a = acos((side_b * side_b + side_c * side_c - side_a * side_a) / (2 * side_b * side_c))
-    angle_b = acos((side_a * side_a + side_c * side_c - side_b * side_b) / (2 * side_a * side_c))
-    angle_c = acos((side_b * side_b + side_a * side_a - side_c * side_c) / (2 * side_b * side_a))
+    gamma = acos((side_b * side_b + side_c * side_c - side_a * side_a) / (2 * side_b * side_c))
+    beta = acos((side_b * side_b + side_a * side_a - side_c * side_c) / (2 * side_b * side_a))
 
-    theta2 = pi/2 - angle_a - atan2(WC[2] - 0.75, sqrt(WC[0]*WC[0] + WC[1]*WC[1]) - 0.35)
-    theta3 = pi/2 - (angle_b + 0.036)
+    theta2 = pi/2 - alpha - beta
+    theta3 = phi - gamma
 
     R0_3 = T0_1[0:3,0:3] * T1_2[0:3,0:3] * T2_3[0:3,0:3]
     R0_3 = R0_3.evalf(subs={q1: theta1, q2: theta2, q3: theta3})
